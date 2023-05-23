@@ -13,9 +13,9 @@ namespace computer_graphics_lab1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Configure controls
-            // ... (same as in the original code)
-            // Add TextBoxes and Labels for x, y, r, and s
+            // Конфигурация элементов управления
+
+            // Добавление TextBox и Label для x, y, r и s
             string[] labelsText = { "X:", "Y:", "R:" };
             Point labelsLocation = new Point(30, 10);
             Point textBoxesLocation = new Point(40, 10);
@@ -35,7 +35,7 @@ namespace computer_graphics_lab1
                 this.Controls.Add(textBox);
             }
 
-            // Add PictureBox
+            // Добавление PictureBox
             PictureBox pictureBox = new PictureBox();
             pictureBox.Name = "pictureBox";
             pictureBox.Location = new Point(10, 120);
@@ -43,13 +43,14 @@ namespace computer_graphics_lab1
             pictureBox.BorderStyle = BorderStyle.FixedSingle;
             this.Controls.Add(pictureBox);
 
-            // Add Draw button
+            // Добавление кнопки Draw
             Button drawButton = new Button();
             drawButton.Text = "Draw Circle";
             drawButton.Location = new Point(230, 10);
             drawButton.Click += new EventHandler(DrawButtonClick);
             this.Controls.Add(drawButton);
 
+            // Добавление TextBox и Label для значения масштабирования s
             Label sLabel = new Label();
             sLabel.Text = "S:";
             sLabel.Location = new Point(180, 10);
@@ -60,12 +61,15 @@ namespace computer_graphics_lab1
             sTextBox.Location = new Point(200, 10);
             sTextBox.Size = new Size(40, 80);
             this.Controls.Add(sTextBox);
+
+            // Конфигурация кнопки Draw
             drawButton.Text = "Draw Circle";
             drawButton.Location = new Point(310, 10);
             drawButton.Size = new Size(100, 100);
             drawButton.Click += new EventHandler(DrawButtonClick);
             this.Controls.Add(drawButton);
-            // Add ComboBox for selecting the color of the circle
+
+            // Добавление ComboBox для выбора цвета круга
             Label colorLabel = new Label();
             colorLabel.Text = "Цвет: ";
             colorLabel.Location = new Point(180, 45);
@@ -81,18 +85,18 @@ namespace computer_graphics_lab1
         {
             try
             {
-                // Get the values of the parameters x, y, r, and scaling factor s
+                // Получение значений параметров x, y, r и масштабирующего коэффициента s
                 int x = int.Parse(((TextBox)this.Controls["xTextBox"]).Text);
                 int y = int.Parse(((TextBox)this.Controls["yTextBox"]).Text);
                 int r = int.Parse(((TextBox)this.Controls["rTextBox"]).Text);
                 float s = float.Parse(((TextBox)this.Controls["sTextBox"]).Text);
 
-                // Create a Bitmap and Graphics object
+                // Создание объекта Bitmap и Graphics
                 Bitmap bitmap = new Bitmap(400, 400);
                 Graphics graphics = Graphics.FromImage(bitmap);
                 graphics.Clear(Color.White);
 
-                // Draw the circle
+                // Отрисовка круга
                 string selectedColor = ((ComboBox)this.Controls["colorComboBox"]).Text;
                 Color color = Color.FromName(selectedColor);
                 Pen pen = new Pen(color, 2);
@@ -101,29 +105,33 @@ namespace computer_graphics_lab1
                 int radius = (int)(r * s);
                 graphics.DrawEllipse(pen, xCoord - radius, yCoord - radius, radius * 2, radius * 2);
 
-                // Set the image in the PictureBox
+                // Установка изображения в PictureBox
                 PictureBox pictureBox = (PictureBox)this.Controls["pictureBox"];
                 pictureBox.Image = bitmap;
-
-                // Label axes and units
+                // Подпись осей и единиц измерения
                 graphics.DrawLine(pen, new Point(0, 200), new Point(400, 200));
                 graphics.DrawLine(pen, new Point(200, 0), new Point(200, 400));
                 Font font = new Font("Arial", 8);
                 Brush brush = new SolidBrush(Color.Black);
-                // Determine the step size for each axis based on the scale factor
+
+                // Определение размера шага для каждой оси на основе масштабного коэффициента
                 float stepSize = 100 * s;
-                // Label the x-axis
+
+                // Подпись оси x
                 for (int i = 1; i <= 10; i++)
                 {
                     graphics.DrawString((i * stepSize).ToString(), font, brush, new Point(200 + (int)(i * stepSize), 190));
                     graphics.DrawString((-i * stepSize).ToString(), font, brush, new Point(200 - (int)(i * stepSize), 190));
                 }
-                // Label the y-axis
+
+                // Подпись оси y
                 for (int i = 1; i <= 10; i++)
                 {
                     graphics.DrawString((i * stepSize).ToString(), font, brush, new Point(210, 200 - (int)(i * stepSize)));
                     graphics.DrawString((-i * stepSize).ToString(), font, brush, new Point(210, 200 + (int)(i * stepSize)));
                 }
+
+                // Подпись начала координат
                 graphics.DrawString("0", font, brush, new Point(200, 200));
             }
             catch (Exception ex)
